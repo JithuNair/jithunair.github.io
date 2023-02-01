@@ -2,7 +2,7 @@
 title: Purpose
 date: 2023-02-01 18:53:00 -500
 categories: [datascience, beginner, analytics]
-tags: [datascience, analytics, machinelearning, beginner, projects]
+tags: [datascience,analytics,machinelearning,beginner,projects]
 ---
 
 # Welcome
