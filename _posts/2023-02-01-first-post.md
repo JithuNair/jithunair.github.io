@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Purpose
-date: 2023-01-02 12:34:27 +05:30
+date: 2023-01-01 12:00:00 +530
 categories: [datascience,beginner,analytics]
 tags: [datascience,analytics,machinelearning,beginner,projects] #TAG Names
 ---
