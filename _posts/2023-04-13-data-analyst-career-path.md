@@ -6,7 +6,7 @@ categories: [datascience,beginner,analytics]
 tags: [datascience,analytics,beginner,projects,python,scraping] #TAG Names
 ---
 
-#Career Path
+# Career Path
 
 --Cut to the fourth paragraph if you're in a hurry.
 
@@ -16,20 +16,20 @@ Fast forward to today, and data science is a buzzword, but the journey wasn't ea
 
 So, how can you become a data analyst? The answer is simple: practical projects. No courses can give you what getting your hands dirty by building something yourself can! This is the most basic rule of programming or for that matter learning anything.
 
-*Start by learning Python using online resources like Tutorials Point, Datacamp, or YouTube videos. Focus on variables, loops, conditions, and data types.
+* Start by learning Python using online resources like Tutorials Point, Datacamp, or YouTube videos. Focus on variables, loops, conditions, and data types.
 
-*Learn web scraping using Beautiful Soup and scrape websites like Wikipedia. Automate the process by sending collated data to your email using secondary email accounts.
+* Learn web scraping using Beautiful Soup and scrape websites like Wikipedia. Automate the process by sending collated data to your email using secondary email accounts.
 
-*Expand your web scraping knowledge by automating web actions using Python and Selenium.
+* Expand your web scraping knowledge by automating web actions using Python and Selenium.
 
-*Learn SQL to wrangle and store the data you scrape into a database. Build tables that organize the data by date, author, time published, and content.
+* Learn SQL to wrangle and store the data you scrape into a database. Build tables that organize the data by date, author, time published, and content.
 
-*Learn data visualization using tools like Tableau, Looker, or PowerBI. Start with the free PowerBI software.
+* Learn data visualization using tools like Tableau, Looker, or PowerBI. Start with the free PowerBI software.
 
-*Finally, familiarize yourself with Git and push your work online to help others and grow your network.
+* Finally, familiarize yourself with Git and push your work online to help others and grow your network.
 
-*Additional tip - BITS Pilani conducts a Master's degree programme in Data Science and Engineering. If you're NOT from a Computer Science background or just want a detailed and in-depth knowledge of everything Analytics. Enroll, but be warned it is a Masters degree course and it is HIGHLY demanding of your time, invest in it only if you're invested in learning.
+* Additional tip - BITS Pilani conducts a Master's degree programme in Data Science and Engineering. If you're NOT from a Computer Science background or just want a detailed and in-depth knowledge of everything Analytics. Enroll, but be warned it is a Masters degree course and it is HIGHLY demanding of your time, invest in it only if you're invested in learning.
 
-*I also forgot a rather important tool which is making all the noise around right now! ChatGPT, use it, abuse it if you must, make it your intern and churn out everything you can to fastrack your learning path!
+* I also forgot a rather important tool which is making all the noise around right now! ChatGPT, use it, abuse it if you must, make it your intern and churn out everything you can to fastrack your learning path!
 
 Have fun! Enjoy the journey and let me know if I missed something.
