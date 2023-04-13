@@ -6,7 +6,7 @@ categories: [datascience,beginner,analytics]
 tags: [datascience,analytics,machinelearning,beginner,projects,linearregression] #TAG Names
 ---
 
-#Linear Regression
+# Linear Regression
 
 Here's what ChatGPT had to say about Linear Regression:
 
