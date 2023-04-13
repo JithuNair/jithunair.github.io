@@ -8,7 +8,7 @@ tags: [datascience,analytics,beginner,projects,python,scraping] #TAG Names
 
 # Career Path
 
-Cut to the fourth paragraph if you're in a hurry.
+--Cut to the fourth paragraph if you're in a hurry.
 
 In the summer of 2018, I had to choose between three full-time job offers and two paid internships in different fields. It was a tough decision to make as it would shape my career and life in many ways. Despite the meager pay of INR 3-4 LPA, I chose data science, a field I knew little about.
 
