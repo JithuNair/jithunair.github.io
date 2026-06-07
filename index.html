@@ -1,4 +1,955 @@
----
-layout: home
-# Index page
----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Jithu J. Nair — Interactive Resume</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f4f6f9;--bg2:#eceef2;--bg3:#e2e5eb;
+  --surface:#ffffff;--surface2:#f9fafb;
+  --border:#e2e5eb;--border2:#d0d4dc;
+  --text:#0f1117;--text2:#374151;--text3:#6b7280;
+  --accent:#2563eb;--accent2:#3b82f6;--accent3:#1d4ed8;
+  --teal:#0d9488;--purple:#7c3aed;--amber:#d97706;--rose:#e11d48;--emerald:#059669;
+  --shadow:0 1px 4px rgba(0,0,0,.06),0 4px 12px rgba(0,0,0,.04);
+  --shadow-lg:0 4px 16px rgba(0,0,0,.10),0 8px 32px rgba(0,0,0,.06);
+  --radius:8px;--radius-lg:12px;--tr:.2s ease;
+}
+.dark{
+  --bg:#0d1117;--bg2:#161b22;--bg3:#1f2937;
+  --surface:#161b22;--surface2:#1f2937;
+  --border:#21262d;--border2:#30363d;
+  --text:#f0f6fc;--text2:#c9d1d9;--text3:#6e7681;
+  --accent:#58a6ff;--accent2:#79c0ff;--accent3:#388bfd;
+  --teal:#2dd4bf;--purple:#a78bfa;--amber:#fbbf24;--rose:#fb7185;--emerald:#34d399;
+  --shadow:0 1px 4px rgba(0,0,0,.3),0 4px 12px rgba(0,0,0,.2);
+  --shadow-lg:0 4px 16px rgba(0,0,0,.4),0 8px 32px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;transition:background var(--tr),color var(--tr)}
+
+/* ── LAYOUT ── */
+.app{display:grid;grid-template-rows:auto 1fr;height:100vh}
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:58px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
+.id-block{display:flex;align-items:center;gap:16px}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;flex-shrink:0}
+.id-name{font-size:15px;font-weight:600;color:var(--text)}
+.id-role{font-size:11px;color:var(--text3);margin-top:1px}
+.header-center{display:flex;gap:2px}
+.nav-btn{font-size:12px;font-weight:500;padding:6px 14px;background:none;border:none;border-radius:6px;color:var(--text3);cursor:pointer;transition:all var(--tr)}
+.nav-btn:hover{background:var(--bg2);color:var(--text)}
+.nav-btn.active{background:var(--accent);color:#fff}
+.header-right{display:flex;align-items:center;gap:10px}
+.contact-link{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--accent);text-decoration:none;opacity:.8}
+.contact-link:hover{opacity:1}
+.theme-btn{width:32px;height:32px;border-radius:6px;border:1px solid var(--border2);background:var(--bg2);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all var(--tr)}
+.theme-btn:hover{border-color:var(--accent)}
+
+/* ── PANELS ── */
+.body{overflow-y:auto;height:calc(100vh - 58px)}
+.panel{display:none;padding:24px 28px;max-width:1280px;margin:0 auto}
+.panel.active{display:block;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── GRID HELPERS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.g6{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.gcol-2{grid-column:span 2}
+.gcol-3{grid-column:span 3}
+.gcol-4{grid-column:span 4}
+
+/* ── CARD ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;box-shadow:var(--shadow)}
+.card-title{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-title .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
+
+/* ── KPI CARDS ── */
+.kpi-num{font-size:32px;font-weight:700;line-height:1;color:var(--text);letter-spacing:-1px}
+.kpi-label{font-size:11px;color:var(--text3);margin-top:4px;font-weight:500}
+.kpi-sub{font-size:10px;color:var(--text3);margin-top:2px;font-style:italic}
+.kpi-trend{font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;margin-top:8px;display:inline-block}
+.kpi-up{background:rgba(5,150,105,.1);color:var(--emerald)}
+.kpi-blue{background:rgba(37,99,235,.1);color:var(--accent)}
+
+/* ── TIMELINE ── */
+.tl-wrap{position:relative;padding-left:20px}
+.tl-wrap::before{content:'';position:absolute;left:5px;top:6px;bottom:6px;width:1.5px;background:linear-gradient(180deg,var(--accent),transparent);opacity:.4}
+.tl-item{position:relative;margin-bottom:20px}
+.tl-item::before{content:'';position:absolute;left:-17px;top:7px;width:8px;height:8px;border-radius:50%;background:var(--surface);border:2px solid var(--border2);box-shadow:0 0 0 3px var(--bg)}
+.tl-item:first-child::before{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+.tl-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:2px}
+.tl-role{font-size:13px;font-weight:600;color:var(--text)}
+.tl-period{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);white-space:nowrap}
+.tl-co{font-size:11.5px;color:var(--accent);margin-bottom:4px;font-weight:500}
+.tl-note{font-size:10.5px;color:var(--emerald);margin-bottom:4px;font-weight:500}
+.tl-tags{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:5px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;padding:2px 6px;border-radius:4px;background:var(--bg2);color:var(--text3);border:1px solid var(--border)}
+.tl-bullets{list-style:none}
+.tl-bullets li{font-size:12.5px;color:var(--text2);padding:2px 0 2px 12px;position:relative;line-height:1.45}
+.tl-bullets li::before{content:'·';position:absolute;left:2px;color:var(--accent);font-size:14px;top:1px}
+
+/* ── SKILL TREE ── */
+.stree-wrap{position:relative;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border)}
+.stree-tooltip{position:absolute;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:9px 12px;pointer-events:none;opacity:0;transition:opacity .12s;z-index:20;max-width:230px;box-shadow:var(--shadow-lg)}
+.tt-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px}
+.tt-items{font-size:11px;color:var(--text3);line-height:1.55}
+
+/* ── PROF BARS ── */
+.prof-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:16px}
+.prof-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px}
+.prof-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.prof-name{font-size:11px;font-weight:600;color:var(--text)}
+.prof-pct{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3)}
+.prof-bar-bg{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;margin-bottom:4px}
+.prof-bar-fill{height:100%;border-radius:2px;transition:width 1s ease}
+.prof-items{font-size:9.5px;color:var(--text3);font-family:'JetBrains Mono',monospace;line-height:1.5}
+
+/* ── PROJECTS ── */
+.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.proj-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);transition:box-shadow var(--tr),transform var(--tr)}
+.proj-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.proj-accent{height:3px}
+.proj-body{padding:16px 20px}
+.proj-name{font-size:14px;font-weight:600;margin-bottom:2px}
+.proj-sub{font-size:11px;color:var(--text3);margin-bottom:8px;font-weight:500}
+.proj-desc{font-size:12.5px;color:var(--text2);line-height:1.55;margin-bottom:10px}
+.proj-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
+.proj-impacts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding-top:10px;border-top:1px solid var(--border)}
+.pi-num{font-size:16px;font-weight:700;color:var(--text);text-align:center;font-family:'JetBrains Mono',monospace}
+.pi-label{font-size:10px;color:var(--text3);text-align:center;margin-top:1px;line-height:1.3}
+.arch-wrap{margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.arch-lbl{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.arch-flow{display:flex;align-items:center;flex-wrap:wrap;gap:4px;font-family:'JetBrains Mono',monospace;font-size:10px}
+.arch-node{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:2px 7px;color:var(--text2)}
+.arch-arr{color:var(--text3)}
+.status-badge{font-family:'JetBrains Mono',monospace;font-size:9px;padding:2px 7px;border-radius:4px;border:1px solid;flex-shrink:0}
+.s-prod{color:var(--emerald);border-color:var(--emerald);background:rgba(5,150,105,.08)}
+.s-del{color:var(--text3);border-color:var(--border2);background:var(--bg2)}
+
+/* ── ABOUT ── */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.lang-row{display:grid;grid-template-columns:90px 1fr 80px;align-items:center;gap:10px;margin-bottom:8px}
+.lang-name{font-size:12.5px;color:var(--text2)}
+.lbar-bg{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden}
+.lbar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 1s ease}
+.lang-note{font-size:10px;color:var(--text3);text-align:right;font-style:italic}
+.domain-wrap{display:flex;flex-wrap:wrap;gap:6px}
+.domain-tag{font-size:10.5px;font-weight:500;padding:4px 10px;border-radius:20px;background:var(--bg2);color:var(--text2);border:1px solid var(--border)}
+.edu-item{margin-bottom:12px}
+.edu-deg{font-size:13px;font-weight:600;color:var(--text)}
+.edu-inst{font-size:12px;color:var(--accent);margin-top:1px}
+.edu-yr{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);margin-top:2px}
+.cert-row{display:inline-flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:8px 12px;margin-top:6px}
+.cert-name{font-size:11.5px;font-weight:600;color:var(--text)}
+.cert-meta{font-size:10px;color:var(--text3)}
+
+/* ── CHART CONTAINERS ── */
+.chart-container{width:100%;position:relative}
+canvas.chart{display:block;width:100%!important}
+
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+</style>
+</head>
+<body>
+<div class="app">
+
+<header class="header">
+  <div class="id-block">
+    <div class="avatar">JN</div>
+    <div>
+      <div class="id-name">Jithu J. Nair</div>
+      <div class="id-role">Manager · Data Science &amp; AI · Blend360</div>
+    </div>
+  </div>
+  <div class="header-center">
+    <button class="nav-btn active" data-panel="overview">Overview</button>
+    <button class="nav-btn" data-panel="skills">Skills</button>
+    <button class="nav-btn" data-panel="projects">Projects</button>
+    <button class="nav-btn" data-panel="about">Profile</button>
+  </div>
+  <div class="header-right">
+    <a class="contact-link" href="mailto:jithunair95@gmail.com">jithunair95@gmail.com</a>
+    <a class="contact-link" href="https://linkedin.com/in/jithunair" target="_blank">linkedin.com/in/jithunair</a>
+    <button class="theme-btn" id="themeBtn">☀️</button>
+  </div>
+</header>
+
+<div class="body">
+
+<!-- ══ OVERVIEW ══ -->
+<div class="panel active" id="panel-overview">
+
+  <!-- KPI row -->
+  <div class="g6" style="margin-bottom:16px">
+    <div class="card">
+      <div class="kpi-num">7+</div>
+      <div class="kpi-label">Years Experience</div>
+      <div class="kpi-sub">Analytics consulting</div>
+      <span class="kpi-trend kpi-blue">Fortune 100</span>
+    </div>
+    <div class="card">
+      <div class="kpi-num">95%</div>
+      <div class="kpi-label">Runtime Reduction</div>
+      <div class="kpi-sub">MLOps pipeline · 10hr → 30min</div>
+      <span class="kpi-trend kpi-up">↑ Production</span>
+    </div>
+    <div class="card">
+      <div class="kpi-num">$2M+</div>
+      <div class="kpi-label">Projected Savings</div>
+      <div class="kpi-sub">Mail non-responder model</div>
+      <span class="kpi-trend kpi-up">↑ Insurance client</span>
+    </div>
+    <div class="card">
+      <div class="kpi-num">28%</div>
+      <div class="kpi-label">Conversion Uplift</div>
+      <div class="kpi-sub">GA4 journey analysis</div>
+      <span class="kpi-trend kpi-up">↑ Hospitality</span>
+    </div>
+    <div class="card">
+      <div class="kpi-num">60%</div>
+      <div class="kpi-label">Faster Insights</div>
+      <div class="kpi-sub">LLM / RAG engine</div>
+      <span class="kpi-trend kpi-up">↑ Marketing</span>
+    </div>
+    <div class="card">
+      <div class="kpi-num">9</div>
+      <div class="kpi-label">Industry Verticals</div>
+      <div class="kpi-sub">Hospitality to Healthcare</div>
+      <span class="kpi-trend kpi-blue">Multi-sector</span>
+    </div>
+  </div>
+
+  <!-- Charts row -->
+  <div class="g3" style="margin-bottom:16px">
+    <div class="card gcol-2">
+      <div class="card-title"><span class="dot"></span>Career Progression &amp; Seniority</div>
+      <div class="chart-container" style="height:200px"><canvas class="chart" id="careerChart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--teal)"></span>Industry Coverage</div>
+      <div class="chart-container" style="height:200px"><canvas class="chart" id="industryChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Timeline + impact chart -->
+  <div class="g3">
+    <div class="card gcol-2">
+      <div class="card-title"><span class="dot" style="background:var(--text3)"></span>Career Timeline</div>
+      <div class="tl-wrap">
+        <div class="tl-item">
+          <div class="tl-head"><span class="tl-role">Manager, Data Science</span><span class="tl-period">Oct 2025 – Present</span></div>
+          <div class="tl-co">Blend360</div>
+          <div class="tl-note">↑ Promoted from Lead Analyst in 13 months</div>
+          <div class="tl-tags"><span class="tag">MLOps</span><span class="tag">GenAI</span><span class="tag">RAG</span><span class="tag">Fortune 100</span><span class="tag">Team Lead</span></div>
+          <ul class="tl-bullets">
+            <li>Enterprise MLOps pipeline on AWS ECS Fargate + Snowflake: 95% faster scoring, 70–80% cost reduction, 300M+ records</li>
+            <li>RAG pipeline + LLM recommendation engine cutting insight delivery by 60% for Fortune 100 marketing teams</li>
+            <li>GA4 customer journey analysis driving 28% booking conversion improvement for global hospitality brand</li>
+            <li>Automated identity resolution via Snowflake fuzzy matching — 90% reduction in manual oversight</li>
+            <li>Integrated CDP + Redshift powering Adobe Journey Optimizer omnichannel activation</li>
+            <li>Built and led 6-member cross-functional engineering and analytics team</li>
+          </ul>
+        </div>
+        <div class="tl-item">
+          <div class="tl-head"><span class="tl-role">Lead Data Analyst</span><span class="tl-period">Sep 2023 – Aug 2024</span></div>
+          <div class="tl-co">Matter Motor Works</div>
+          <div class="tl-tags"><span class="tag">CDP</span><span class="tag">EV</span><span class="tag">LLM</span><span class="tag">FastAPI</span></div>
+          <ul class="tl-bullets">
+            <li>Built Customer Data Platform using Python + PySpark processing real-time telemetry, app usage, and lifecycle data</li>
+            <li>RAG-enabled Patent Generator Portal: OCR + LLM automation reducing IP filing time by ~70%</li>
+            <li>Secure OTA software update API with FastAPI + public-private key encryption for remote fleet governance</li>
+          </ul>
+        </div>
+        <div class="tl-item">
+          <div class="tl-head"><span class="tl-role">Senior Data Analyst</span><span class="tl-period">Nov 2021 – Sep 2023</span></div>
+          <div class="tl-co">Merkle (Dentsu)</div>
+          <div class="tl-tags"><span class="tag">NLP</span><span class="tag">word2vec</span><span class="tag">MMM</span><span class="tag">BFSI</span></div>
+          <ul class="tl-bullets">
+            <li>Next Best Action recommendation system (word2vec + collaborative filtering) for major bank's mobile app</li>
+            <li>92%-accurate mail non-responder model: $2M projected annual savings for insurance client</li>
+            <li>Automated marketing data ingestion (Meta · Snapchat · Google Ads · DCM) → 80% faster reporting for 72+ brands</li>
+          </ul>
+        </div>
+        <div class="tl-item">
+          <div class="tl-head"><span class="tl-role">Senior Software Engineer</span><span class="tl-period">Nov 2020 – Nov 2021</span></div>
+          <div class="tl-co">Cozentus Technologies</div>
+          <div class="tl-tags"><span class="tag">ETL</span><span class="tag">HIPAA</span><span class="tag">Azure</span><span class="tag">CI/CD</span></div>
+          <ul class="tl-bullets">
+            <li>HIPAA-compliant Python ETL/ELT pipelines on Azure DevOps for US healthcare insurance data</li>
+            <li>Django APIs for banking institutions deployed to AWS Elastic Beanstalk with CI/CD ownership</li>
+          </ul>
+        </div>
+        <div class="tl-item">
+          <div class="tl-head"><span class="tl-role">Junior Data Scientist</span><span class="tl-period">May 2018 – Mar 2020</span></div>
+          <div class="tl-co">SG Analytics (Straive)</div>
+          <div class="tl-tags"><span class="tag">NLP</span><span class="tag">Tableau</span><span class="tag">Nielsen</span><span class="tag">Media</span></div>
+          <ul class="tl-bullets">
+            <li>Nielsen cannibalization dashboards and Tableau reporting for major US media networks</li>
+            <li>NLP sentiment analysis on social media for audience trend tracking</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--purple)"></span>Impact by Initiative</div>
+      <div class="chart-container" style="height:260px"><canvas class="chart" id="impactChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SKILLS ══ -->
+<div class="panel" id="panel-skills">
+  <div class="g2" style="margin-bottom:16px">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Skills Radar</div>
+      <div class="chart-container" style="height:300px"><canvas class="chart" id="radarChart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--teal)"></span>Proficiency by Category</div>
+      <div class="chart-container" style="height:300px"><canvas class="chart" id="hbarChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title"><span class="dot" style="background:var(--purple)"></span>Skill Tree — Unlocked Abilities</div>
+    <div class="stree-wrap" id="streeWrap">
+      <canvas id="skillCanvas"></canvas>
+      <div class="stree-tooltip" id="streeTooltip">
+        <div class="tt-name" id="tt-name"></div>
+        <div class="tt-items" id="tt-items"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="prof-grid" id="profGrid"></div>
+</div>
+
+<!-- ══ PROJECTS ══ -->
+<div class="panel" id="panel-projects">
+  <div class="proj-grid" id="projGrid"></div>
+</div>
+
+<!-- ══ ABOUT ══ -->
+<div class="panel" id="panel-about">
+  <div class="g3" style="margin-bottom:16px">
+    <div class="card gcol-2">
+      <div class="card-title"><span class="dot"></span>Language Proficiency</div>
+      <div id="langBars"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--teal)"></span>Tech Languages</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">
+        <span class="tag" style="font-size:11px;padding:4px 9px">Python</span>
+        <span class="tag" style="font-size:11px;padding:4px 9px">SQL</span>
+        <span class="tag" style="font-size:11px;padding:4px 9px">PySpark</span>
+        <span class="tag" style="font-size:11px;padding:4px 9px">Bash</span>
+        <span class="tag" style="font-size:11px;padding:4px 9px">Shell</span>
+        <span class="tag" style="font-size:11px;padding:4px 9px">JavaScript</span>
+      </div>
+    </div>
+  </div>
+  <div class="g3">
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--amber)"></span>Education</div>
+      <div class="edu-item">
+        <div class="edu-deg">M.Tech — Data Science &amp; Engineering</div>
+        <div class="edu-inst">BITS Pilani</div>
+        <div class="edu-yr">2021 – 2023</div>
+      </div>
+      <div class="edu-item" style="margin-bottom:0">
+        <div class="edu-deg">B.Tech — Computer Science &amp; Engineering</div>
+        <div class="edu-inst">ITER, Bhubaneswar</div>
+        <div class="edu-yr">2014 – 2018</div>
+      </div>
+      <div class="cert-row">
+        <span style="font-size:16px">🏅</span>
+        <div>
+          <div class="cert-name">SnowPro Core Certified</div>
+          <div class="cert-meta">Snowflake · Valid through August 2027</div>
+        </div>
+      </div>
+    </div>
+    <div class="card gcol-2">
+      <div class="card-title"><span class="dot" style="background:var(--rose)"></span>Industry Domains</div>
+      <div class="domain-wrap">
+        <span class="domain-tag">Hospitality</span><span class="domain-tag">Telecom</span>
+        <span class="domain-tag">BFSI</span><span class="domain-tag">Healthcare</span>
+        <span class="domain-tag">Automotive</span><span class="domain-tag">Media / OTT</span>
+        <span class="domain-tag">Insurance</span><span class="domain-tag">Logistics</span>
+        <span class="domain-tag">Retail</span>
+      </div>
+      <div style="font-size:11px;color:var(--text3);margin-top:10px">Fortune 100 client delivery across all 9 sectors</div>
+      <div style="margin-top:16px">
+        <div class="card-title" style="margin-bottom:10px"><span class="dot" style="background:var(--emerald)"></span>Highlights</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px">
+            <div style="font-size:18px;font-weight:700;color:var(--text);font-family:'JetBrains Mono',monospace">300M+</div>
+            <div style="font-size:10px;color:var(--text3);margin-top:2px">Records stress-tested</div>
+          </div>
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px">
+            <div style="font-size:18px;font-weight:700;color:var(--text);font-family:'JetBrains Mono',monospace">72+</div>
+            <div style="font-size:10px;color:var(--text3);margin-top:2px">Brands on reporting platform</div>
+          </div>
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px">
+            <div style="font-size:18px;font-weight:700;color:var(--text);font-family:'JetBrains Mono',monospace">4</div>
+            <div style="font-size:10px;color:var(--text3);margin-top:2px">Clarity enterprise clients</div>
+          </div>
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px">
+            <div style="font-size:18px;font-weight:700;color:var(--text);font-family:'JetBrains Mono',monospace">13mo</div>
+            <div style="font-size:10px;color:var(--text3);margin-top:2px">Analyst → Manager</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /body -->
+</div><!-- /app -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+'use strict';
+
+// ── THEME ──────────────────────────────────────────────────
+let dark = false;
+const themeBtn = document.getElementById('themeBtn');
+themeBtn.addEventListener('click', () => {
+  dark = !dark;
+  document.body.classList.toggle('dark', dark);
+  themeBtn.textContent = dark ? '🌙' : '☀️';
+  rebuildCharts();
+  if (document.getElementById('panel-skills').classList.contains('active')) {
+    stCtx.setTransform(1,0,0,1,0,0); drawRadialTree();
+  }
+});
+
+// ── NAV ───────────────────────────────────────────────────
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
+    if (btn.dataset.panel === 'skills') {
+      setTimeout(() => { stCtx.setTransform(1,0,0,1,0,0); drawRadialTree(); buildProfBars(); buildRadarChart(); buildHBarChart(); }, 60);
+    }
+    if (btn.dataset.panel === 'about') setTimeout(buildLangBars, 60);
+  });
+});
+
+// ── CSS VAR HELPER ────────────────────────────────────────
+function cv(name) { return getComputedStyle(document.body).getPropertyValue(name).trim(); }
+
+// ── CHART.JS DEFAULTS ─────────────────────────────────────
+function chartDefaults() {
+  return {
+    textColor: cv('--text2'),
+    gridColor: cv('--border'),
+    accent: cv('--accent'),
+    teal: cv('--teal'),
+    purple: cv('--purple'),
+    amber: cv('--amber'),
+    rose: cv('--rose'),
+    emerald: cv('--emerald'),
+  };
+}
+
+let charts = {};
+function destroyChart(id) { if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
+
+function rebuildCharts() {
+  const active = document.querySelector('.panel.active').id.replace('panel-','');
+  buildCareerChart();
+  buildIndustryChart();
+  buildImpactChart();
+  if (active === 'skills') { buildRadarChart(); buildHBarChart(); }
+}
+
+// ── CAREER PROGRESSION CHART ─────────────────────────────
+function buildCareerChart() {
+  destroyChart('career');
+  const C = chartDefaults();
+  const ctx = document.getElementById('careerChart').getContext('2d');
+  charts['career'] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['SG Analytics\n2018–20', 'Cozentus\n2020–21', 'Merkle\n2021–23', 'Matter\n2023–24', 'Blend360\n2024–25', 'Blend360\n2025–now'],
+      datasets: [{
+        label: 'Seniority Level',
+        data: [1, 2, 3, 4, 4.5, 5],
+        backgroundColor: [
+          C.gridColor, C.gridColor, C.teal + '99', C.teal + 'cc', C.accent + 'cc', C.accent,
+        ],
+        borderRadius: 6,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: {
+        callbacks: {
+          label: ctx => ['Jr. Data Scientist','Sr. Software Engineer','Sr. Data Analyst','Lead Data Analyst','Lead Analyst → Mgr','Manager, Data Science'][ctx.dataIndex]
+        }
+      }},
+      scales: {
+        x: { grid: { color: C.gridColor + '40' }, ticks: { color: C.textColor, font: { size: 9 } } },
+        y: { display: false, min: 0, max: 6 }
+      }
+    }
+  });
+}
+
+// ── INDUSTRY DOUGHNUT ────────────────────────────────────
+function buildIndustryChart() {
+  destroyChart('industry');
+  const C = chartDefaults();
+  const ctx = document.getElementById('industryChart').getContext('2d');
+  charts['industry'] = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Hospitality','BFSI','Media/OTT','Automotive','Healthcare','Telecom','Insurance','Logistics','Retail'],
+      datasets: [{
+        data: [28, 20, 15, 12, 8, 6, 5, 4, 2],
+        backgroundColor: [C.accent, C.teal, C.purple, C.amber, C.rose, C.emerald,
+          C.accent+'99', C.teal+'99', C.purple+'99'],
+        borderWidth: 0,
+        hoverOffset: 6,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      cutout: '62%',
+      plugins: {
+        legend: { position: 'right', labels: { color: C.textColor, font: { size: 10 }, boxWidth: 10, padding: 8 } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw}%` } }
+      }
+    }
+  });
+}
+
+// ── IMPACT HORIZONTAL BAR ────────────────────────────────
+function buildImpactChart() {
+  destroyChart('impact');
+  const C = chartDefaults();
+  const ctx = document.getElementById('impactChart').getContext('2d');
+  charts['impact'] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Runtime reduction','Cloud cost savings','Faster insights','Booking uplift','Mail model accuracy','Less manual oversight','Faster reporting'],
+      datasets: [{
+        data: [95, 77.5, 60, 28, 92, 90, 80],
+        backgroundColor: [C.accent, C.accent+'cc', C.teal, C.emerald, C.purple, C.teal+'bb', C.purple+'bb'],
+        borderRadius: 4,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw}%` } } },
+      scales: {
+        x: { max: 100, grid: { color: C.gridColor + '40' }, ticks: { color: C.textColor, font: { size: 9 }, callback: v => v + '%' } },
+        y: { grid: { display: false }, ticks: { color: C.textColor, font: { size: 10 } } }
+      }
+    }
+  });
+}
+
+// ── RADAR CHART ──────────────────────────────────────────
+function buildRadarChart() {
+  destroyChart('radar');
+  const C = chartDefaults();
+  const ctx = document.getElementById('radarChart').getContext('2d');
+  charts['radar'] = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ['AI / GenAI','ML Modeling','Data Engineering','Cloud / MLOps','Viz & Delivery','Strategy & Comms'],
+      datasets: [{
+        label: 'Proficiency',
+        data: [95, 88, 90, 84, 80, 85],
+        backgroundColor: C.accent + '22',
+        borderColor: C.accent,
+        pointBackgroundColor: C.accent,
+        pointRadius: 4,
+        borderWidth: 2,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        r: {
+          min: 0, max: 100,
+          ticks: { stepSize: 25, color: C.textColor, font: { size: 9 }, backdropColor: 'transparent' },
+          grid: { color: C.gridColor },
+          angleLines: { color: C.gridColor },
+          pointLabels: { color: C.textColor, font: { size: 11, weight: '500' } }
+        }
+      }
+    }
+  });
+}
+
+// ── HORIZONTAL BAR ───────────────────────────────────────
+function buildHBarChart() {
+  destroyChart('hbar');
+  const C = chartDefaults();
+  const ctx = document.getElementById('hbarChart').getContext('2d');
+  charts['hbar'] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['AI / GenAI','Data Engineering','ML Modeling','Cloud / MLOps','Strategy & Comms','Viz & Delivery'],
+      datasets: [{
+        data: [95, 90, 88, 84, 85, 80],
+        backgroundColor: [C.accent, C.teal, C.purple, C.amber, C.emerald, C.rose],
+        borderRadius: 4,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw}%` } } },
+      scales: {
+        x: { max: 100, grid: { color: C.gridColor + '40' }, ticks: { color: C.textColor, font: { size: 9 }, callback: v => v + '%' } },
+        y: { grid: { display: false }, ticks: { color: C.textColor, font: { size: 11 } } }
+      }
+    }
+  });
+}
+
+// init overview charts
+setTimeout(() => { buildCareerChart(); buildIndustryChart(); buildImpactChart(); }, 100);
+
+// ── SKILL TREE (Radial Canvas) ────────────────────────────
+const ST_BRANCHES = [
+  { id:'ai',    label:'AI / GenAI',     color:'#2563eb', angle:-90,
+    detail:'LLMs · RAG · LangChain · Agent Architecture · Prompt Eng · Embeddings · OpenAI API',
+    leaves:[
+      {id:'rag',    label:['RAG','Pipelines'],   detail:'Vector search · chunking · hybrid retrieval · reranking · Pinecone / FAISS'},
+      {id:'llm',    label:['LLM','Eng.'],         detail:'Prompt engineering · structured outputs · fine-tuning · OpenAI / Anthropic'},
+      {id:'agents', label:['Agent','Systems'],    detail:'LangGraph · multi-agent orchestration · tool use · memory · Clarity platform'},
+      {id:'embed',  label:['Embed-','dings'],     detail:'Semantic search · vector stores · similarity ranking · dense retrieval'},
+    ]},
+  { id:'cloud', label:'Cloud / MLOps',  color:'#d97706', angle:-30,
+    detail:'AWS · Azure · GCP · Docker · Kubernetes · Terraform · MLflow · GitHub Actions',
+    leaves:[
+      {id:'aws',    label:['AWS /','Azure'],      detail:'ECS Fargate · Glue · S3 · Redshift · Elastic Beanstalk · Azure DevOps · GCP'},
+      {id:'mlflow', label:['MLflow','CI/CD'],     detail:'Model tracking · automated retraining · drift detection · GitHub Actions'},
+      {id:'iac',    label:['Docker','K8s / TF'],  detail:'Containerisation · Kubernetes orchestration · Terraform IaC'},
+      {id:'api',    label:['FastAPI','Django'],   detail:'REST API design · real-time scoring · async endpoints · OTA update APIs'},
+    ]},
+  { id:'viz',   label:'Viz & Delivery', color:'#0d9488', angle:30,
+    detail:'Tableau · Power BI · Looker Studio · GeoPandas · Folium · GA4 · C-Suite storytelling',
+    leaves:[
+      {id:'tab',    label:['Tableau','Power BI'], detail:'Executive dashboards · KPI frameworks · calculated fields · row-level security'},
+      {id:'geo',    label:['Geo-','spatial'],      detail:'GeoPandas · Folium · logistics route maps · ETA visualisation'},
+      {id:'csuite', label:['C-Suite','Comms'],     detail:'Executive storytelling · McKinsey-style decks · pre-sales solution design'},
+      {id:'ga4',    label:['GA4 /','Analytics'],   detail:'Funnel analysis · BigQuery export · conversion optimisation · 28% uplift'},
+    ]},
+  { id:'de',    label:'Data Eng.',      color:'#059669', angle:90,
+    detail:'PySpark · Snowflake · Databricks · BigQuery · Redshift · Kafka · Airflow · ADF',
+    leaves:[
+      {id:'spark',label:['PySpark','Databricks'],    detail:'Distributed processing · Unity Catalog · Delta Lake · ETL at scale'},
+      {id:'snow', label:['Snowflake','Certified ✦'], detail:'SnowPro Core Certified · data sharing · fuzzy matching · stored procedures'},
+      {id:'kafka',label:['Kafka /','Airflow'],        detail:'Event streaming · pipeline orchestration · Azure Data Factory · SSIS'},
+      {id:'dw',   label:['Data','Warehouse'],         detail:'BigQuery · Redshift · PostgreSQL · schema design · query optimization'},
+    ]},
+  { id:'ml',    label:'ML Modeling',    color:'#7c3aed', angle:-150,
+    detail:'XGBoost · NLP · word2vec · MMM · Time-Series · Clustering · Collaborative Filtering',
+    leaves:[
+      {id:'xgb',label:['Gradient','Boosting'],  detail:'XGBoost · LightGBM · SHAP · feature engineering · propensity modeling'},
+      {id:'nlp',label:['NLP /','word2vec'],      detail:'Sentiment analysis · entity recognition · word embeddings · text classification'},
+      {id:'mmm',label:['MMM &','Elasticity'],    detail:'Marketing mix modeling · channel ROI · C-suite media budget allocation'},
+      {id:'ts', label:['Time','Series'],         detail:'Demand forecasting · seasonality · ARIMA · Prophet · ETA prediction'},
+    ]},
+];
+
+const ST_ROOT = {id:'root', label:['Jithu J. Nair','7+ years'], detail:'Data Science · AI/ML · Strategy · Engineering · Fortune 100 delivery'};
+const ST_W=900, ST_H=900, ST_CX=450, ST_CY=450;
+const ST_R_ROOT=38, ST_R_BRANCH=26, ST_R_LEAF=22;
+const ST_D_BRANCH=195, ST_D_LEAF=130;
+const ST_LEAF_OFFSETS=[-55,-18,18,55];
+
+const stCanvas = document.getElementById('skillCanvas');
+const stCtx = stCanvas.getContext('2d');
+const stTooltip = document.getElementById('streeTooltip');
+let stNodes = [];
+
+function stDeg2rad(d){ return d*Math.PI/180; }
+function stPolar(ox,oy,dist,a){ const r=stDeg2rad(a); return {x:ox+dist*Math.cos(r), y:oy+dist*Math.sin(r)}; }
+
+function stBuildNodes(){
+  stNodes=[];
+  stNodes.push({...ST_ROOT, x:ST_CX, y:ST_CY, r:ST_R_ROOT, type:'root'});
+  ST_BRANCHES.forEach(branch=>{
+    const bp=stPolar(ST_CX,ST_CY,ST_D_BRANCH,branch.angle);
+    stNodes.push({...branch, x:bp.x, y:bp.y, r:ST_R_BRANCH, type:'branch'});
+    branch.leaves.forEach((leaf,i)=>{
+      const lp=stPolar(bp.x,bp.y,ST_D_LEAF,branch.angle+ST_LEAF_OFFSETS[i]);
+      stNodes.push({...leaf, x:lp.x, y:lp.y, r:ST_R_LEAF, type:'leaf', color:branch.color});
+    });
+  });
+}
+
+function stGetTheme(){
+  const isDark=dark;
+  return {
+    bg:        isDark?'#0d1117':'#f4f6f9',
+    dotColor:  isDark?'rgba(255,255,255,0.025)':'rgba(0,0,0,0.035)',
+    rootFill:  isDark?'#161b22':'#ffffff',
+    rootStroke:isDark?'#388bfd':'#2563eb',
+    rootRing:  isDark?'#21262d':'#e2e5eb',
+    rootText:  isDark?'#f0f6fc':'#0f1117',
+    rootSub:   isDark?'#6e7681':'#6b7280',
+    leafText:  isDark?'#c9d1d9':'#374151',
+    lineOpB:   0.4,
+    lineOpL:   0.25,
+    nodeAlpha: isDark?0.82:0.9,
+    glow:      isDark,
+  };
+}
+
+function stGetLabelOffset(node){
+  if(node.type==='root') return{dx:0,dy:0,align:'center',baseline:'middle'};
+  const dx=node.x-ST_CX, dy=node.y-ST_CY;
+  const a=Math.atan2(dy,dx)*180/Math.PI;
+  const pad=node.r+11;
+  const abs=Math.abs(a);
+  if(abs<30)     return{dx:pad,    dy:0,        align:'left',  baseline:'middle'};
+  if(abs>150)    return{dx:-pad,   dy:0,        align:'right', baseline:'middle'};
+  if(a<0&&a>-60) return{dx:pad*.7, dy:-pad*.7,  align:'left',  baseline:'bottom'};
+  if(a<-120)     return{dx:-pad*.7,dy:-pad*.7,  align:'right', baseline:'bottom'};
+  if(a<0)        return{dx:0,      dy:-pad,     align:'center',baseline:'bottom'};
+  if(a>0&&a<60)  return{dx:pad*.7, dy:pad*.7,   align:'left',  baseline:'top'};
+  if(a>120)      return{dx:-pad*.7,dy:pad*.7,   align:'right', baseline:'top'};
+  return            {dx:0,      dy:pad,      align:'center',baseline:'top'};
+}
+
+function drawRadialTree(){
+  const T=stGetTheme();
+  const scale=stCanvas.parentElement.clientWidth/ST_W;
+  stCanvas.width=stCanvas.parentElement.clientWidth;
+  stCanvas.height=ST_H*scale;
+  stCtx.scale(scale,scale);
+  stCtx.fillStyle=T.bg; stCtx.fillRect(0,0,ST_W,ST_H);
+  stCtx.fillStyle=T.dotColor;
+  for(let gx=0;gx<ST_W;gx+=28)for(let gy=0;gy<ST_H;gy+=28){
+    stCtx.beginPath();stCtx.arc(gx,gy,1,0,Math.PI*2);stCtx.fill();
+  }
+  ST_BRANCHES.forEach(branch=>{
+    const b=stNodes.find(n=>n.id===branch.id);
+    stLine(ST_CX,ST_CY,b.x,b.y,branch.color,2,T.lineOpB);
+    branch.leaves.forEach(leaf=>{
+      const l=stNodes.find(n=>n.id===leaf.id);
+      stLine(b.x,b.y,l.x,l.y,branch.color,1.5,T.lineOpL);
+    });
+  });
+  stNodes.forEach(n=>stDrawNode(n,T));
+  stNodes.forEach(n=>stDrawLabel(n,T));
+}
+
+function stLine(x1,y1,x2,y2,color,w,op){
+  stCtx.save();stCtx.globalAlpha=op;stCtx.strokeStyle=color;stCtx.lineWidth=w;
+  stCtx.beginPath();stCtx.moveTo(x1,y1);stCtx.lineTo(x2,y2);stCtx.stroke();stCtx.restore();
+}
+
+function stDrawNode(node,T){
+  const isRoot=node.type==='root';
+  stCtx.save();
+  if(!isRoot&&T.glow){stCtx.shadowColor=node.color;stCtx.shadowBlur=10;}
+  stCtx.beginPath();stCtx.arc(node.x,node.y,node.r,0,Math.PI*2);
+  stCtx.fillStyle=isRoot?T.rootFill:node.color;
+  stCtx.globalAlpha=isRoot?1:(node.type==='leaf'?T.nodeAlpha:1);
+  stCtx.fill();
+  stCtx.shadowBlur=0;
+  stCtx.strokeStyle=isRoot?T.rootStroke:node.color;
+  stCtx.lineWidth=isRoot?2:1;stCtx.globalAlpha=1;stCtx.stroke();
+  if(isRoot){
+    stCtx.beginPath();stCtx.arc(node.x,node.y,node.r-6,0,Math.PI*2);
+    stCtx.strokeStyle=T.rootRing;stCtx.lineWidth=1;stCtx.stroke();
+  }
+  stCtx.restore();
+}
+
+function stDrawLabel(node,T){
+  const off=stGetLabelOffset(node);
+  const lx=node.x+off.dx, ly=node.y+off.dy;
+  const lines=Array.isArray(node.label)?node.label:[node.label];
+  const isRoot=node.type==='root', isBranch=node.type==='branch';
+  const fontSize=isRoot?13:isBranch?12:11;
+  const weight=isBranch?'600':'400';
+  const color=isRoot?T.rootText:isBranch?node.color:T.leafText;
+  const lineH=fontSize+4;
+  const totalH=lines.length*lineH;
+  stCtx.save();
+  stCtx.font=`${weight} ${fontSize}px Inter,system-ui,sans-serif`;
+  stCtx.fillStyle=color;
+  stCtx.textAlign=off.align==='left'?'left':off.align==='right'?'right':'center';
+  let startY;
+  if(isRoot||off.baseline==='middle') startY=ly-totalH/2+lineH*0.75;
+  else if(off.baseline==='bottom')    startY=ly-totalH+lineH*0.25;
+  else                                 startY=ly+lineH*0.75;
+  if(isRoot) stCtx.textAlign='center';
+  lines.forEach((l,i)=>stCtx.fillText(l,lx,startY+i*lineH));
+  stCtx.restore();
+}
+
+stCanvas.addEventListener('mousemove',e=>{
+  const rect=stCanvas.getBoundingClientRect();
+  const scale=ST_W/stCanvas.clientWidth;
+  const mx=(e.clientX-rect.left)*scale, my=(e.clientY-rect.top)*scale;
+  let hit=null;
+  for(const n of stNodes){const dx=mx-n.x,dy=my-n.y;if(dx*dx+dy*dy<=(n.r+8)*(n.r+8)){hit=n;break;}}
+  if(hit){
+    stCanvas.style.cursor='pointer';
+    document.getElementById('tt-name').textContent=Array.isArray(hit.label)?hit.label.join(' '):hit.label;
+    document.getElementById('tt-items').textContent=hit.detail||'';
+    stTooltip.style.opacity='1';
+    const r=stCanvas.parentElement.getBoundingClientRect();
+    let lx=e.clientX-r.left+14, ly=e.clientY-r.top+14;
+    if(lx+240>r.width) lx-=255;
+    if(ly+90>r.height) ly-=100;
+    stTooltip.style.left=lx+'px'; stTooltip.style.top=ly+'px';
+  } else {
+    stCanvas.style.cursor='default'; stTooltip.style.opacity='0';
+  }
+});
+stCanvas.addEventListener('mouseleave',()=>{stTooltip.style.opacity='0';});
+window.addEventListener('resize',()=>{
+  if(document.getElementById('panel-skills').classList.contains('active')){
+    stCtx.setTransform(1,0,0,1,0,0); drawRadialTree();
+  }
+  rebuildCharts();
+});
+stBuildNodes();
+
+// ── PROFICIENCY BARS ─────────────────────────────────────
+const PROFS = [
+  { cat:'AI / GenAI',       pct:95, color:'#2563eb', items:'LLMs · RAG · LangChain · Agent Architecture · Embeddings' },
+  { cat:'Data Engineering', pct:90, color:'#059669', items:'PySpark · Snowflake · Databricks · Kafka · Airflow · ADF' },
+  { cat:'ML Modeling',      pct:88, color:'#7c3aed', items:'XGBoost · NLP · word2vec · MMM · Time-Series · Clustering' },
+  { cat:'Cloud / MLOps',    pct:84, color:'#d97706', items:'AWS · Azure · GCP · Docker · Kubernetes · Terraform · MLflow' },
+  { cat:'Strategy & Comms', pct:85, color:'#059669', items:'C-suite advisory · pre-sales · executive storytelling · MMM' },
+  { cat:'Viz & Delivery',   pct:80, color:'#0d9488', items:'Tableau · Power BI · Looker Studio · GA4 · Executive Comms' },
+];
+
+function buildProfBars() {
+  document.getElementById('profGrid').innerHTML = PROFS.map(p => `
+    <div class="prof-card">
+      <div class="prof-head">
+        <span class="prof-name">${p.cat}</span>
+        <span class="prof-pct">${p.pct}%</span>
+      </div>
+      <div class="prof-bar-bg"><div class="prof-bar-fill" style="width:${p.pct}%;background:${p.color}"></div></div>
+      <div class="prof-items">${p.items}</div>
+    </div>
+  `).join('');
+}
+
+// ── PROJECTS ─────────────────────────────────────────────
+const PROJECTS = [
+  {
+    name:'Clarity',
+    sub:'Multi-Agent GenAI Insight Platform',
+    desc:'Enterprise-grade GenAI platform delivering autonomous insight generation for Fortune 100 clients. Orchestrates multiple LLM agents via LangGraph, retrieves context from a RAG layer over Snowflake-hosted knowledge bases, and surfaces structured business recommendations.',
+    tags:['LangGraph','RAG','LLMs','Snowflake','Databricks','Multi-Agent','AEP'],
+    impacts:[{num:'4',label:'Enterprise clients in pipeline'},{num:'60%',label:'Faster insight delivery'},{num:'∞',label:'Analyst hours automated'}],
+    arch:['User Query','→','LangGraph Orchestrator','→','Tool Agents','→','RAG / Snowflake','→','LLM Synthesis','→','Output'],
+    status:'production', color:'#2563eb'
+  },
+  {
+    name:'Enterprise MLOps Pipeline',
+    sub:'AWS ECS Fargate · Snowflake · 300M+ Records',
+    desc:'Replaced a legacy Alteryx-based scoring workflow with a cloud-native MLOps pipeline. Designed for production-scale throughput with full CI/CD, model monitoring, automated retraining triggers, and observability. Stress-tested at 300M+ records.',
+    tags:['AWS ECS Fargate','Snowflake','MLflow','CI/CD','Python','Docker','Observability'],
+    impacts:[{num:'95%',label:'Runtime reduction (10hr→30min)'},{num:'70–80%',label:'Cloud cost savings'},{num:'300M+',label:'Records stress-tested'}],
+    arch:['Raw Data','→','Snowflake Ingest','→','ECS Fargate Score','→','MLflow Track','→','CI/CD Deploy','→','Monitor'],
+    status:'production', color:'#d97706'
+  },
+  {
+    name:'CDP + Omnichannel Activation',
+    sub:'Identity Resolution · Adobe Journey Optimizer',
+    desc:'End-to-end identity resolution and omnichannel activation pipeline for a global hospitality brand. Integrated a leading CDP with Amazon Redshift to construct unified golden guest records, then activated through Adobe Journey Optimizer.',
+    tags:['CDP','Redshift','Adobe AJO','Identity Resolution','Snowflake','Personalization'],
+    impacts:[{num:'90%',label:'Manual oversight eliminated'},{num:'28%',label:'Booking conversion uplift'},{num:'1:1',label:'Omnichannel personalization'}],
+    arch:['Guest Data','→','CDP Ingest','→','Redshift','→','Adobe AJO','→','Email · Push · In-Stay'],
+    status:'production', color:'#059669'
+  },
+  {
+    name:'EV CDP + IP Automation Portal',
+    sub:'Automotive Sector · LLM + OCR Pipeline',
+    desc:'Customer Data Platform built with Python and PySpark ingesting real-time telemetry and lifecycle events. Plus a RAG-enabled Patent Generator Portal that takes engineering documents through OCR, LLM-based structuring, and automated government IP filing.',
+    tags:['PySpark','CDP','FastAPI','RAG','OCR','LLM','Patent Automation'],
+    impacts:[{num:'~70%',label:'IP filing time reduction'},{num:'Real-time',label:'Telemetry ingestion'},{num:'OTA',label:'Secure update API'}],
+    arch:['Telemetry','→','PySpark CDP','→','Unified Profiles','→','Power BI', '/', 'Docs → OCR → LLM → Portal'],
+    status:'delivered', color:'#0d9488'
+  },
+  {
+    name:'Next Best Action Recommendation Engine',
+    sub:'word2vec · Collaborative Filtering · Banking',
+    desc:'End-to-end NBA recommendation system deployed to a major bank\'s mobile app. Used word2vec to learn latent representations of customer transaction sequences, combined with collaborative filtering to surface personalised product recommendations.',
+    tags:['word2vec','Collaborative Filtering','BigQuery','NLP','Python','ML Pipeline','BFSI'],
+    impacts:[{num:'92%',label:'Model accuracy'},{num:'$2M+',label:'Projected annual savings'},{num:'72+',label:'Brands on reporting platform'}],
+    arch:['BigQuery Transactions','→','word2vec Embeddings','→','Collab Filter','→','Ranking Layer','→','Mobile App'],
+    status:'delivered', color:'#7c3aed'
+  },
+];
+
+function buildProjects() {
+  document.getElementById('projGrid').innerHTML = PROJECTS.map(p => `
+    <div class="proj-card">
+      <div class="proj-accent" style="background:${p.color}"></div>
+      <div class="proj-body">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px">
+          <div>
+            <div class="proj-name">${p.name}</div>
+            <div class="proj-sub">${p.sub}</div>
+          </div>
+          <span class="${p.status==='production'?'status-badge s-prod':'status-badge s-del'}">${p.status}</span>
+        </div>
+        <div class="proj-tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+        <div class="proj-desc">${p.desc}</div>
+        <div class="proj-impacts">${p.impacts.map(i=>`<div><div class="pi-num">${i.num}</div><div class="pi-label">${i.label}</div></div>`).join('')}</div>
+        <div class="arch-wrap">
+          <div class="arch-lbl">Architecture Flow</div>
+          <div class="arch-flow">${p.arch.map(a=>a==='→'||a==='/'?`<span class="arch-arr">${a}</span>`:`<span class="arch-node">${a}</span>`).join('')}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+buildProjects();
+
+// ── LANGUAGES ────────────────────────────────────────────
+const LANGS = [
+  {l:'English',  p:100, note:'Native'},
+  {l:'Hindi',    p:98,  note:'Native'},
+  {l:'Malayalam',p:98,  note:'Native'},
+  {l:'Odia',     p:95,  note:'Native'},
+  {l:'Bengali',  p:80,  note:'Proficient'},
+  {l:'Tamil',    p:75,  note:'Proficient'},
+  {l:'Marathi',  p:70,  note:'Proficient'},
+  {l:'Japanese', p:30,  note:'N5 Conversational'},
+];
+
+function buildLangBars() {
+  document.getElementById('langBars').innerHTML = LANGS.map(l => `
+    <div class="lang-row">
+      <span class="lang-name">${l.l}</span>
+      <div class="lbar-bg"><div class="lbar-fill" style="width:${l.p}%"></div></div>
+      <span class="lang-note">${l.note}</span>
+    </div>
+    ${l.l === 'Japanese' ? `<div style="padding-left:2px;margin-top:-4px;margin-bottom:6px"><a href="https://www.instagram.com/p/DRcI0zmkwnC/" target="_blank" style="font-size:10px;color:var(--text3);text-decoration:none;font-family:'JetBrains Mono',monospace;opacity:.75;transition:opacity .15s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.75">↗ interviewed in Japanese on a trip to Japan</a></div>` : ''}
+  `).join('');
+}
+</script>
+</body>
+</html>
