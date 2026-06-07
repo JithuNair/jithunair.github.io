@@ -230,6 +230,7 @@ canvas.chart{display:block;width:100%!important}
 
   /* Charts */
   .chart-container { height: 180px !important; }
+  .chart-container:has(#careerChart) { height: 240px !important; }
 
   /* About hero */
   .about-hero { height: 180px; margin-bottom: 12px; }
@@ -264,9 +265,15 @@ canvas.chart{display:block;width:100%!important}
   /* By the numbers → 2×4 */
   .g2 > .card > div[style*="repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
 
-  /* Skill tree */
-  #skillCanvas { width: 100% !important; height: 260px !important; }
-  .stree-wrap { height: 280px !important; }
+  /* Impact chart shorter on mobile */
+  #impactChart { height: 160px !important; }
+
+  /* Skill tree — hide canvas, show card grid on mobile */
+  #skillCanvas { display: none !important; }
+  .stree-tooltip { display: none !important; }
+  #mobileSkillTree { display: flex !important; }
+  .stree-wrap { height: auto !important; background: transparent !important; overflow: visible !important; }
+  .card:has(#streeWrap) { padding: 16px !important; }
 
   /* Pikachu */
   #pkmnHint { top: -15px !important; }
@@ -282,6 +289,18 @@ canvas.chart{display:block;width:100%!important}
   .mosaic-main { min-height: 170px !important; }
   #photostackWrap { height: 200px !important; }
 }
+
+
+  /* Mobile skill tree */
+  .mobile-skill-tree { display: flex; flex-direction: column; gap: 14px; padding: 4px 0; }
+  .mst-branch { background: var(--surface); border-radius: var(--radius); padding: 12px 14px; }
+  .mst-branch-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .mst-branch-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .mst-branch-label { font-size: 12px; font-weight: 600; color: var(--text1); letter-spacing: .3px; }
+  .mst-leaves { display: flex; flex-direction: column; gap: 8px; }
+  .mst-leaf { cursor: pointer; }
+  .mst-leaf-name { display: block; font-size: 11px; font-weight: 500; color: var(--text2); margin-bottom: 2px; }
+  .mst-leaf-detail { display: block; font-size: 10px; color: var(--text3); line-height: 1.45; }
 
 </style>
 </head>
@@ -496,6 +515,109 @@ canvas.chart{display:block;width:100%!important}
       <div class="stree-tooltip" id="streeTooltip">
         <div class="tt-name" id="tt-name"></div>
         <div class="tt-items" id="tt-items"></div>
+      </div>
+      <div id="mobileSkillTree" class="mobile-skill-tree" style="display:none">
+        <div class="mst-branch">
+          <div class="mst-branch-header" style="border-left:3px solid #2563eb;padding-left:10px">
+            <span class="mst-branch-dot" style="background:#2563eb"></span>
+            <span class="mst-branch-label">AI / GenAI</span>
+          </div>
+          <div class="mst-leaves">
+            <div class="mst-leaf" title="Vector search · chunking · hybrid retrieval · Pinecone / FAISS">
+              <span class="mst-leaf-name">RAG Pipelines</span>
+              <span class="mst-leaf-detail">Vector search · chunking · hybrid retrieval · Pinecone / FAISS</span>
+            </div><div class="mst-leaf" title="Prompt engineering · structured outputs · OpenAI / Anthropic">
+              <span class="mst-leaf-name">LLM Engineering</span>
+              <span class="mst-leaf-detail">Prompt engineering · structured outputs · OpenAI / Anthropic</span>
+            </div><div class="mst-leaf" title="LangGraph · multi-agent orchestration · tool use · Clarity platform">
+              <span class="mst-leaf-name">Agent Systems</span>
+              <span class="mst-leaf-detail">LangGraph · multi-agent orchestration · tool use · Clarity platform</span>
+            </div><div class="mst-leaf" title="Semantic search · vector stores · similarity ranking · dense retrieval">
+              <span class="mst-leaf-name">Embeddings</span>
+              <span class="mst-leaf-detail">Semantic search · vector stores · similarity ranking · dense retrieval</span>
+            </div>
+          </div>
+        </div><div class="mst-branch">
+          <div class="mst-branch-header" style="border-left:3px solid #d97706;padding-left:10px">
+            <span class="mst-branch-dot" style="background:#d97706"></span>
+            <span class="mst-branch-label">Cloud / MLOps</span>
+          </div>
+          <div class="mst-leaves">
+            <div class="mst-leaf" title="ECS Fargate · Glue · S3 · Redshift · Elastic Beanstalk · Azure DevOps">
+              <span class="mst-leaf-name">AWS / Azure</span>
+              <span class="mst-leaf-detail">ECS Fargate · Glue · S3 · Redshift · Elastic Beanstalk · Azure DevOps</span>
+            </div><div class="mst-leaf" title="Model tracking · automated retraining · drift detection · GitHub Actions">
+              <span class="mst-leaf-name">MLflow / CI/CD</span>
+              <span class="mst-leaf-detail">Model tracking · automated retraining · drift detection · GitHub Actions</span>
+            </div><div class="mst-leaf" title="Containerisation · Kubernetes orchestration · Terraform IaC">
+              <span class="mst-leaf-name">Docker / K8s</span>
+              <span class="mst-leaf-detail">Containerisation · Kubernetes orchestration · Terraform IaC</span>
+            </div><div class="mst-leaf" title="REST API design · real-time scoring · async endpoints">
+              <span class="mst-leaf-name">FastAPI / Django</span>
+              <span class="mst-leaf-detail">REST API design · real-time scoring · async endpoints</span>
+            </div>
+          </div>
+        </div><div class="mst-branch">
+          <div class="mst-branch-header" style="border-left:3px solid #059669;padding-left:10px">
+            <span class="mst-branch-dot" style="background:#059669"></span>
+            <span class="mst-branch-label">Data Engineering</span>
+          </div>
+          <div class="mst-leaves">
+            <div class="mst-leaf" title="Distributed processing · Unity Catalog · Delta Lake · ETL at scale">
+              <span class="mst-leaf-name">PySpark / Databricks</span>
+              <span class="mst-leaf-detail">Distributed processing · Unity Catalog · Delta Lake · ETL at scale</span>
+            </div><div class="mst-leaf" title="SnowPro Core Certified · data sharing · fuzzy matching · stored procedures">
+              <span class="mst-leaf-name">Snowflake ✦</span>
+              <span class="mst-leaf-detail">SnowPro Core Certified · data sharing · fuzzy matching · stored procedures</span>
+            </div><div class="mst-leaf" title="Event streaming · pipeline orchestration · Azure Data Factory">
+              <span class="mst-leaf-name">Kafka / Airflow</span>
+              <span class="mst-leaf-detail">Event streaming · pipeline orchestration · Azure Data Factory</span>
+            </div><div class="mst-leaf" title="BigQuery · Redshift · PostgreSQL · schema design · query optimization">
+              <span class="mst-leaf-name">Data Warehouse</span>
+              <span class="mst-leaf-detail">BigQuery · Redshift · PostgreSQL · schema design · query optimization</span>
+            </div>
+          </div>
+        </div><div class="mst-branch">
+          <div class="mst-branch-header" style="border-left:3px solid #7c3aed;padding-left:10px">
+            <span class="mst-branch-dot" style="background:#7c3aed"></span>
+            <span class="mst-branch-label">ML Modeling</span>
+          </div>
+          <div class="mst-leaves">
+            <div class="mst-leaf" title="XGBoost · LightGBM · SHAP · feature engineering · propensity modeling">
+              <span class="mst-leaf-name">Gradient Boosting</span>
+              <span class="mst-leaf-detail">XGBoost · LightGBM · SHAP · feature engineering · propensity modeling</span>
+            </div><div class="mst-leaf" title="Sentiment analysis · entity recognition · word embeddings · text classification">
+              <span class="mst-leaf-name">NLP / word2vec</span>
+              <span class="mst-leaf-detail">Sentiment analysis · entity recognition · word embeddings · text classification</span>
+            </div><div class="mst-leaf" title="Marketing mix modeling · channel ROI · C-suite media budget allocation">
+              <span class="mst-leaf-name">MMM & Elasticity</span>
+              <span class="mst-leaf-detail">Marketing mix modeling · channel ROI · C-suite media budget allocation</span>
+            </div><div class="mst-leaf" title="Demand forecasting · seasonality · ARIMA · Prophet · ETA prediction">
+              <span class="mst-leaf-name">Time Series</span>
+              <span class="mst-leaf-detail">Demand forecasting · seasonality · ARIMA · Prophet · ETA prediction</span>
+            </div>
+          </div>
+        </div><div class="mst-branch">
+          <div class="mst-branch-header" style="border-left:3px solid #0d9488;padding-left:10px">
+            <span class="mst-branch-dot" style="background:#0d9488"></span>
+            <span class="mst-branch-label">Viz & Delivery</span>
+          </div>
+          <div class="mst-leaves">
+            <div class="mst-leaf" title="Executive dashboards · KPI frameworks · calculated fields · row-level security">
+              <span class="mst-leaf-name">Tableau / Power BI</span>
+              <span class="mst-leaf-detail">Executive dashboards · KPI frameworks · calculated fields · row-level security</span>
+            </div><div class="mst-leaf" title="GeoPandas · Folium · logistics route maps · ETA visualisation">
+              <span class="mst-leaf-name">Geospatial</span>
+              <span class="mst-leaf-detail">GeoPandas · Folium · logistics route maps · ETA visualisation</span>
+            </div><div class="mst-leaf" title="Executive storytelling · McKinsey-style decks · pre-sales solution design">
+              <span class="mst-leaf-name">C-Suite Comms</span>
+              <span class="mst-leaf-detail">Executive storytelling · McKinsey-style decks · pre-sales solution design</span>
+            </div><div class="mst-leaf" title="Funnel analysis · BigQuery export · conversion optimisation · 28% uplift">
+              <span class="mst-leaf-name">GA4 / Analytics</span>
+              <span class="mst-leaf-detail">Funnel analysis · BigQuery export · conversion optimisation · 28% uplift</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -779,11 +901,14 @@ function buildCareerChart() {
 
   // 5 bars — Blend360 merged into one
   const roles    = ['Jr. Data Scientist', 'Sr. Software Engineer', 'Sr. Data Analyst', 'Lead Data Analyst', 'Data Science Manager'];
-  const xLabels  = ['SG Analytics\n2018–20', 'Cozentus\n2020–21', 'Merkle\n2021–23', 'Matter\n2023–24', 'Blend360\n2024–now'];
+  const isMobileChart = window.innerWidth < 768;
+  const xLabels  = isMobileChart
+    ? ['SG Analytics', 'Cozentus', 'Merkle', 'Matter', 'Blend360']
+    : ['SG Analytics\n2018–20', 'Cozentus\n2020–21', 'Merkle\n2021–23', 'Matter\n2023–24', 'Blend360\n2024–now'];
   const values   = [1, 2, 3, 4, 5];
   const colors   = [C.gridColor + 'cc', C.gridColor + 'cc', C.teal + '99', C.teal + 'cc', C.accent];
 
-  // Plugin: draw role label ABOVE each bar, centred, dark-mode aware
+  // Plugin: draw role label ABOVE each bar — rotated on mobile to avoid overlap
   const aboveLabelPlugin = {
     id: 'aboveLabels',
     afterDatasetsDraw(chart) {
@@ -791,18 +916,30 @@ function buildCareerChart() {
       const meta = chart.getDatasetMeta(0);
       const isDarkMode = document.body.classList.contains('dark');
       const labelColor = isDarkMode ? 'rgba(240,246,252,0.92)' : 'rgba(15,17,23,0.85)';
+      const isMobile = window.innerWidth < 768;
+      const fontSize = isMobile ? 8 : 9.5;
 
       meta.data.forEach((bar, i) => {
         const label = roles[i];
-        const barTopY = bar.y;          // top pixel of bar
-        const barCenterX = bar.x;       // horizontal centre of bar
+        const barTopY = bar.y;
+        const barCenterX = bar.x;
 
         c.save();
-        c.font = '500 9.5px Inter,system-ui,sans-serif';
         c.fillStyle = labelColor;
-        c.textAlign = 'center';
-        c.textBaseline = 'bottom';
-        c.fillText(label, barCenterX, barTopY - 5);
+        c.font = `500 ${fontSize}px Inter,system-ui,sans-serif`;
+
+        if (isMobile) {
+          // Rotate 45deg above bar to avoid overlap
+          c.translate(barCenterX, barTopY - 4);
+          c.rotate(-Math.PI / 4);
+          c.textAlign = 'left';
+          c.textBaseline = 'bottom';
+          c.fillText(label, 0, 0);
+        } else {
+          c.textAlign = 'center';
+          c.textBaseline = 'bottom';
+          c.fillText(label, barCenterX, barTopY - 5);
+        }
         c.restore();
       });
     }
@@ -823,7 +960,7 @@ function buildCareerChart() {
     },
     options: {
       responsive: true, maintainAspectRatio: false,
-      layout: { padding: { top: 28 } },
+      layout: { padding: { top: window.innerWidth < 768 ? 60 : 28 } },
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -838,8 +975,8 @@ function buildCareerChart() {
           grid: { display: false },
           ticks: {
             color: C.textColor,
-            font: { size: 9 },
-            maxRotation: 0,
+            font: { size: window.innerWidth < 768 ? 7 : 9 },
+            maxRotation: window.innerWidth < 768 ? 30 : 0,
             autoSkip: false
           }
         },
@@ -1077,10 +1214,14 @@ function stGetLabelOffset(node){
 
 function drawRadialTree(){
   const T=stGetTheme();
-  const scale=stCanvas.parentElement.clientWidth/ST_W;
-  stCanvas.width=stCanvas.parentElement.clientWidth;
-  stCanvas.height=ST_H*scale;
-  stCtx.scale(scale,scale);
+  const dpr=window.devicePixelRatio||1;
+  const containerW=stCanvas.parentElement.clientWidth;
+  const scale=containerW/ST_W;
+  stCanvas.width=containerW*dpr;
+  stCanvas.height=ST_H*scale*dpr;
+  stCanvas.style.width=containerW+'px';
+  stCanvas.style.height=(ST_H*scale)+'px';
+  stCtx.scale(scale*dpr,scale*dpr);
   stCtx.fillStyle=T.bg; stCtx.fillRect(0,0,ST_W,ST_H);
   stCtx.fillStyle=T.dotColor;
   for(let gx=0;gx<ST_W;gx+=28)for(let gy=0;gy<ST_H;gy+=28){
